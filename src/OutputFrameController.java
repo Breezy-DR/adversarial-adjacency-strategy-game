@@ -69,7 +69,8 @@ public class OutputFrameController {
      * @param isBotFirst True if bot is first, false otherwise.
      *
      */
-    void getInput(String name1, String name2, String rounds, boolean isBotFirst){
+    void getInput(String name1, String name2, String rounds, boolean isBotFirst,
+                  String algorithm){
         this.playerXName.setText(name1);
         this.playerOName.setText(name2);
         this.roundsLeftLabel.setText(rounds);
@@ -77,7 +78,11 @@ public class OutputFrameController {
         this.isBotFirst = isBotFirst;
 
         // Start bot
-        this.bot = new Bot();
+        switch (algorithm) {
+            case "Minimax Algorithm with Alpha-Beta Pruning" -> this.bot = new Minimax();
+            case "Hill Climbing Algorithm" -> this.bot = new HillClimbing();
+            case "Genetic Algorithm" -> this.bot = new Genetic();
+        }
         this.playerXTurn = !isBotFirst;
         if (this.isBotFirst) {
             this.moveBot();
@@ -172,7 +177,7 @@ public class OutputFrameController {
      */
     private void selectedCoordinates(int i, int j){
         // Invalid when a button with an X or an O is clicked.
-        if (!this.buttons[i][j].getText().equals(""))
+        if (!this.buttons[i][j].getText().isEmpty())
             new Alert(Alert.AlertType.ERROR, "Invalid coordinates: Try again!").showAndWait();
         // Button must be blank.
         else {
@@ -353,11 +358,15 @@ public class OutputFrameController {
     }
 
     private void moveBot() {
-        int[] botMove = this.bot.move();
+        Button[][] tiles = new Button[ROW][COL];
+        for (int i = 0; i < ROW; i++)
+            for (int j = 0; j < COL; j++)
+                tiles[i][j] = new Button(this.buttons[i][j].getText());
+        int[] botMove = this.bot.move(tiles, this.roundsLeft);
         int i = botMove[0];
         int j = botMove[1];
 
-        if (!this.buttons[i][j].getText().equals("")) {
+        if (!this.buttons[i][j].getText().isEmpty()) {
             new Alert(Alert.AlertType.ERROR, "Bot Invalid Coordinates. Exiting.").showAndWait();
             System.exit(1);
             return;
