@@ -24,6 +24,8 @@ public class InputFrameController{
 
     public CheckBox isBotFirst;
     @FXML
+    public CheckBox isBotSecond;
+    @FXML
     private TextField player1;
 
     @FXML
@@ -33,8 +35,10 @@ public class InputFrameController{
     private ComboBox<String> numberOfRounds;
 
     @FXML
-    private ComboBox<String> algorithmChoice;
+    private ComboBox<String> algorithmChoice1;
 
+    @FXML
+    private ComboBox<String> algorithmChoice2;
 
     /**
      * Initialize the dropdown ComboBox with a list of items that are allowed to be selected.
@@ -53,7 +57,8 @@ public class InputFrameController{
                 "Hill Climbing Algorithm",
                 "Genetic Algorithm"
         );
-        this.algorithmChoice.setItems(algorithmTypes);
+        this.algorithmChoice1.setItems(algorithmTypes);
+        this.algorithmChoice2.setItems(algorithmTypes);
     }
 
 
@@ -90,7 +95,7 @@ public class InputFrameController{
             // Get controller of output frame and pass input including player names and number of rounds chosen.
             OutputFrameController outputFC = loader.getController();
             outputFC.getInput(this.player1.getText(), this.player2.getText(), this.numberOfRounds.getValue(), this.isBotFirst.isSelected(),
-                    this.algorithmChoice.getValue());
+                    this.algorithmChoice1.getValue(), this.algorithmChoice2.getValue());
 
             // Open the new frame.
             Stage secondaryStage = new Stage();
@@ -133,7 +138,7 @@ public class InputFrameController{
             return false;
         }
 
-        if (this.algorithmChoice.getValue() == null) {
+        if (this.algorithmChoice2.getValue() == null) {
             new Alert(Alert.AlertType.ERROR, "Bot algorithm dropdown menu is blank.").showAndWait();
             return false;
         }
