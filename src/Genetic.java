@@ -11,7 +11,7 @@ public class Genetic extends Bot {
     private int maxIteration = 1000;
     private int populationCount = 1000;
     @Override
-    public int[] move(Button[][] tiles, int roundLeft) {
+    public int[] move(Button[][] tiles, int roundLeft, String player) {
         ArrayList<Integer> bannedCell = banCell(tiles);
 //        System.out.println("genetic start");
         ArrayList<Integer> chromosome = genetic(roundLeft,bannedCell,maxIteration,tiles);
