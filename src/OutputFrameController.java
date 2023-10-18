@@ -1,3 +1,4 @@
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -94,13 +95,13 @@ public class OutputFrameController {
             }
 
             if (!this.isBotFirst) {
-                this.moveBotPlayer1();
+                Platform.runLater(() -> this.moveBotPlayer1());
             }
-        } else {
-            this.playerXTurn = !isBotFirst;
-            if (this.isBotFirst) {
-                this.moveBot();
-            }
+        }
+
+        this.playerXTurn = !isBotFirst;
+        if (this.isBotFirst) {
+            Platform.runLater(() -> this.moveBot());
         }
     }
 
@@ -216,7 +217,8 @@ public class OutputFrameController {
                     this.endOfGame();
                 } else {
                     // Bot's turn
-                    this.moveBot();
+
+                    Platform.runLater(() -> this.moveBot());
                 }
                 
             }
@@ -238,7 +240,8 @@ public class OutputFrameController {
                     this.endOfGame();       // Determine & announce the winner.
                 } else {
                     if (this.botPlayer1 != null) {
-                        this.moveBotPlayer1();
+
+                        Platform.runLater(() -> this.moveBotPlayer1());
                     }
                 }
             }
