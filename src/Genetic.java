@@ -38,7 +38,7 @@ public class Genetic extends Bot {
             }
             pool.add(i);
         }
-        System.out.println(pool);
+//        System.out.println(pool);
     }
     @Override
     public int[] move(Button[][] tiles, int roundLeft, String player) {
@@ -281,7 +281,7 @@ public class Genetic extends Bot {
 
 
     public ArrayList<Integer> genetic(int roundLeft, ArrayList<Integer> bannedCellDef,int maxIter, Button[][] tiles){
-        System.out.println("in");
+//        System.out.println("in");
         ArrayList<Integer> bestChromosome = new ArrayList<>();
         int bestScore = -999;
         ArrayList<Integer> chosen_1 = new ArrayList<>();
@@ -289,13 +289,13 @@ public class Genetic extends Bot {
         ArrayList[] childs = new ArrayList[2];
         ArrayList<ArrayList<Integer>> population = generatePopulation(populationCount, roundLeft,bannedCellDef);
 
-        System.out.println("Initialize " + roundLeft + bannedCellDef);
-        System.out.println("ban count " + bannedCellDef.size());
-        System.out.println(bannedCellDef);
+//        System.out.println("Initialize " + roundLeft + bannedCellDef);
+//        System.out.println("ban count " + bannedCellDef.size());
+//        System.out.println(bannedCellDef);
 
         for(int iteration=0; iteration < maxIter; iteration++){
             ArrayList<ArrayList<Integer>> newPopulation = new ArrayList<>();
-            System.out.println("Number Iteration: " + iteration );
+//            System.out.println("Number Iteration: " + iteration );
             // find best individual
             for(int i = 0; i < population.size();i++){
                 int score = fitnessFunction(population.get(i), updateGameBoard(tiles));
@@ -304,37 +304,37 @@ public class Genetic extends Bot {
                     bestChromosome = copyList(population.get(i));
                 }
             }
-            System.out.println("best " + bestChromosome + bestScore);
-            System.out.println(population);
+//            System.out.println("best " + bestChromosome + bestScore);
+//            System.out.println(population);
             if(bestScore == 63){
                 break;
             }
             int a = 0;
             while(!population.isEmpty()){
-                System.out.println("Number Selection: " + a);
+//                System.out.println("Number Selection: " + a);
 //                System.out.println("inside" + population);
 //                System.out.println("selection in" + i);
                 chosen_1 = selection(population, tiles);
                 chosen_2 = selection(population, tiles);
-                System.out.println("selection out" + chosen_1 + chosen_2);
+//                System.out.println("selection out" + chosen_1 + chosen_2);
 
                 // cross over masih belum memperhitungkan langkah yg sama
 //                System.out.println("cross over in" + chosen_1 + chosen_2);
                 childs = crossOver(chosen_1.size()/2, chosen_1, chosen_2);
-                System.out.println("cross over out" + childs[0] + childs[1]);
+//                System.out.println("cross over out" + childs[0] + childs[1]);
                 mutation(childs, bannedCellDef);
-                System.out.println("mutation out");
+//                System.out.println("mutation out");
 
                 newPopulation.add(childs[0]);
                 newPopulation.add(childs[1]);
                 a++;
             }
-            System.out.println("Loop 2");
+//            System.out.println("Loop 2");
 //            System.out.println("before"  + population);
             population = copyMultiList(newPopulation);
 //            System.out.println("after"  + population);
         }
-        System.out.println("return " + bestChromosome);
+//        System.out.println("return " + bestChromosome);
         return bestChromosome;
     }
 
