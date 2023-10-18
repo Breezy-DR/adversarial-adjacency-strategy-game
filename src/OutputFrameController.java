@@ -96,11 +96,11 @@ public class OutputFrameController {
             if (!this.isBotFirst) {
                 this.moveBotPlayer1();
             }
-        }
-
-        this.playerXTurn = !isBotFirst;
-        if (this.isBotFirst) {
-            this.moveBot();
+        } else {
+            this.playerXTurn = !isBotFirst;
+            if (this.isBotFirst) {
+                this.moveBot();
+            }
         }
     }
 
@@ -238,11 +238,6 @@ public class OutputFrameController {
                     this.endOfGame();       // Determine & announce the winner.
                 } else {
                     if (this.botPlayer1 != null) {
-                        try {
-                            Thread.sleep(1000); // Sleep for 1 second (1000 milliseconds)
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
                         this.moveBotPlayer1();
                     }
                 }
