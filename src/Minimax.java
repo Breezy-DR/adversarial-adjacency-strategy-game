@@ -28,8 +28,8 @@ public class Minimax extends Bot{
     }
 
     public int minimax(Button[][] tiles, int alpha, int beta, boolean isMaximizing, int roundLeft, int depth) {
-        // max depth: 5
-        if (roundLeft == 0 || depth == 3) {
+        // max depth: 2
+        if (roundLeft == 0 || depth == 2) {
             // There are no rounds left
             int XScore = 0;
             int OScore = 0;
