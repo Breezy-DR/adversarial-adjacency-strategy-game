@@ -1,5 +1,7 @@
 import javafx.scene.control.Button;
 
+import java.util.Objects;
+
 public class Minimax extends Bot{
 
     @Override
@@ -14,8 +16,8 @@ public class Minimax extends Bot{
                 if (tiles[i][j].getText().isEmpty()) {
                     Button[][] tiles2 = copyBoardGame(tiles);
 
-                    tiles2 = updatetiles(i, j, tiles2, "O");
-                    int score = minimax(tiles2, alpha, beta, false, roundLeft, 0);
+                    tiles2 = updatetiles(i, j, tiles2, player);
+                    int score = minimax(tiles2, alpha, beta, false, roundLeft, 0, player);
                     if (score >= maxScore) {
                         move[0] = i;
                         move[1] = j;
@@ -27,7 +29,7 @@ public class Minimax extends Bot{
         return move;
     }
 
-    public int minimax(Button[][] tiles, int alpha, int beta, boolean isMaximizing, int roundLeft, int depth) {
+    public int minimax(Button[][] tiles, int alpha, int beta, boolean isMaximizing, int roundLeft, int depth, String player) {
         // max depth: 2
         if (roundLeft == 0 || depth == 2) {
             // There are no rounds left
@@ -43,20 +45,31 @@ public class Minimax extends Bot{
                     }
                 }
             }
-            return OScore - XScore;
+            if (Objects.equals(player, "X")) {
+                return XScore - OScore;
+            } else {
+                return OScore - XScore;
+            }
+
         }
         boolean isPruning = false;
         // Game is not over yet
         if (isMaximizing) {
             // Maximizing
+            String pickedPlayer = "";
+            if (Objects.equals(player, "X")) {
+                pickedPlayer = "X";
+            } else {
+                pickedPlayer = "O";
+            }
             int maxScore = -9999;
             for (int i=0; i < 8; i++) {
                 if (!isPruning) {
                     for (int j=0; j < 8; j++) {
                         if (tiles[i][j].getText().isEmpty()) {
                             Button[][] tiles2 = copyBoardGame(tiles);
-                            tiles2 = updatetiles(i, j, tiles2, "O");
-                            int score = minimax(tiles2, alpha, beta, false, roundLeft - 1, depth + 1);
+                            tiles2 = updatetiles(i, j, tiles2, pickedPlayer);
+                            int score = minimax(tiles2, alpha, beta, false, roundLeft - 1, depth + 1, player);
                             if (score > maxScore) {
                                 maxScore = score;
                             }
@@ -77,14 +90,20 @@ public class Minimax extends Bot{
             return maxScore;
         } else {
             // Minimizing
+            String pickedPlayer = "";
+            if (Objects.equals(player, "X")) {
+                pickedPlayer = "O";
+            } else {
+                pickedPlayer = "X";
+            }
             int minScore = 9999;
             for (int i=0; i < 8; i++) {
                 if (!isPruning) {
                     for (int j=0; j < 8; j++) {
                         if (tiles[i][j].getText().isEmpty()) {
                             Button[][] tiles2 = copyBoardGame(tiles);
-                            tiles2 = updatetiles(i, j, tiles2, "X");
-                            int score = minimax(tiles2, alpha, beta, true, roundLeft - 1, depth + 1);
+                            tiles2 = updatetiles(i, j, tiles2, pickedPlayer);
+                            int score = minimax(tiles2, alpha, beta, true, roundLeft - 1, depth + 1, player);
                             if (score < minScore) {
                                 minScore = score;
                             }

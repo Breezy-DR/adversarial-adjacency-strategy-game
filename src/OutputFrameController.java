@@ -240,11 +240,7 @@ public class OutputFrameController {
                     this.endOfGame();       // Determine & announce the winner.
                 } else {
                     if (this.botPlayer1 != null) {
-                        try {
-                            Thread.sleep(1000); // Sleep for 1 second (1000 milliseconds)
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+
                         Platform.runLater(() -> this.moveBotPlayer1());
                     }
                 }
