@@ -1,6 +1,7 @@
 import javafx.scene.control.Button;
 
 import javax.swing.*;
+import javax.swing.plaf.synth.SynthTextAreaUI;
 import java.lang.reflect.Array;
 import java.util.Objects;
 import java.util.Random;
@@ -8,8 +9,37 @@ import java.util.Arrays;
 import java.util.ArrayList;
 
 public class Genetic extends Bot {
-    private int maxIteration = 1000;
-    private int populationCount = 1000;
+    private final int maxIteration = 100;
+    private final int populationCount = 100;
+    private ArrayList<Integer> pool = new ArrayList<>();
+
+    public Genetic(){
+        for (int i = 0; i < 78; i++) {
+            if((i > 7 && i < 10)){
+                continue;
+            }
+            else if ((i > 17 && i < 20)) {
+                continue;
+            }
+            else if ((i > 27 && i < 30)) {
+                continue;
+            }
+            else if ((i > 37 && i < 40)) {
+                continue;
+            }
+            else if ((i > 47 && i < 50)) {
+                continue;
+            }
+            else if ((i > 57 && i < 60)) {
+                continue;
+            }
+            else if ((i > 67 && i < 70)) {
+                continue;
+            }
+            pool.add(i);
+        }
+        System.out.println(pool);
+    }
     @Override
     public int[] move(Button[][] tiles, int roundLeft, String player) {
         ArrayList<Integer> bannedCell = banCell(tiles);
@@ -53,7 +83,7 @@ public class Genetic extends Bot {
             }
         }
 
-        return bannedCell;
+        return copyList(bannedCell);
     }
 
     public int[] coordinateFromCell(int cell){
@@ -73,20 +103,16 @@ public class Genetic extends Bot {
     }
 
     public int generateCell(ArrayList<Integer> cellBanned){
-        cellBanned.sort(null);
+        ArrayList<Integer> numberPool = copyList(pool);
+        Random random = new Random();
 
-        int cell = 70;
-        Random rand = new Random();
-
-        while(cellBanned.contains(cell)) {
-            int x = rand.nextInt(7);
-            int y = rand.nextInt(7);
-
-            String cellStr = Integer.toString(x) + Integer.toString(y);
-            cell = Integer.valueOf(cellStr);
+        for(Integer element : cellBanned){
+            numberPool.remove(Integer.valueOf(element));
         }
 
-        return cell;
+        int cellIndex = random.nextInt(numberPool.size());
+        return numberPool.get(cellIndex);
+
     }
 
     public ArrayList<ArrayList<Integer>> generatePopulation(int populationCount, int genesCount, ArrayList<Integer> bannedCellDef){
@@ -190,7 +216,9 @@ public class Genetic extends Bot {
                 chosenIndex = i;
             }
         }
-        population.remove(chosenIndex);
+//        System.out.println(maxScore);
+//        System.out.println(chosen);
+        population.remove(chosen);
         return chosen;
     }
 
@@ -253,17 +281,20 @@ public class Genetic extends Bot {
 
 
     public ArrayList<Integer> genetic(int roundLeft, ArrayList<Integer> bannedCellDef,int maxIter, Button[][] tiles){
+        System.out.println("in");
         ArrayList<Integer> bestChromosome = new ArrayList<>();
         int bestScore = -999;
         ArrayList<Integer> chosen_1 = new ArrayList<>();
         ArrayList<Integer> chosen_2 = new ArrayList<>();
         ArrayList[] childs = new ArrayList[2];
         ArrayList<ArrayList<Integer>> population = generatePopulation(populationCount, roundLeft,bannedCellDef);
-        System.out.println(population);
-        ArrayList<ArrayList<Integer>> newPopulation = new ArrayList<>();
-        System.out.println("Initialize");
+
+        System.out.println("Initialize " + roundLeft + bannedCellDef);
+        System.out.println("ban count " + bannedCellDef.size());
+        System.out.println(bannedCellDef);
 
         for(int iteration=0; iteration < maxIter; iteration++){
+            ArrayList<ArrayList<Integer>> newPopulation = new ArrayList<>();
             System.out.println("Number Iteration: " + iteration );
             // find best individual
             for(int i = 0; i < population.size();i++){
@@ -278,28 +309,32 @@ public class Genetic extends Bot {
             if(bestScore == 63){
                 break;
             }
-
-            for(int i = 0; i < population.size()/2; i++){
+            int a = 0;
+            while(!population.isEmpty()){
+                System.out.println("Number Selection: " + a);
+//                System.out.println("inside" + population);
 //                System.out.println("selection in" + i);
                 chosen_1 = selection(population, tiles);
                 chosen_2 = selection(population, tiles);
-//                System.out.println("selection out" + chosen_1 + chosen_2);
+                System.out.println("selection out" + chosen_1 + chosen_2);
 
                 // cross over masih belum memperhitungkan langkah yg sama
 //                System.out.println("cross over in" + chosen_1 + chosen_2);
                 childs = crossOver(chosen_1.size()/2, chosen_1, chosen_2);
-//                System.out.println("cross over out" + childs[0] + childs[1]);
+                System.out.println("cross over out" + childs[0] + childs[1]);
                 mutation(childs, bannedCellDef);
-//                System.out.println("mutation out" + i);
+                System.out.println("mutation out");
 
                 newPopulation.add(childs[0]);
                 newPopulation.add(childs[1]);
+                a++;
             }
-//            System.out.println("Loop 2");
-
+            System.out.println("Loop 2");
+//            System.out.println("before"  + population);
             population = copyMultiList(newPopulation);
-            newPopulation.clear();
+//            System.out.println("after"  + population);
         }
+        System.out.println("return " + bestChromosome);
         return bestChromosome;
     }
 
