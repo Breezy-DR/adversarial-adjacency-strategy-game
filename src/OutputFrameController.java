@@ -219,6 +219,7 @@ public class OutputFrameController {
                     // Bot's turn
 
                     Platform.runLater(() -> this.moveBot());
+                    
                 }
                 
             }
@@ -381,6 +382,12 @@ public class OutputFrameController {
     }
 
     private void moveBot() {
+        try {
+            Thread.sleep(1000); // sleep for delaying move for visualization
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         Button[][] tiles = new Button[ROW][COL];
         for (int i = 0; i < ROW; i++)
             for (int j = 0; j < COL; j++)
@@ -399,6 +406,12 @@ public class OutputFrameController {
     }
 
     private void moveBotPlayer1() {
+        try {
+            Thread.sleep(1000); // sleep for delaying move for visualization
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        
         Button[][] tiles = new Button[ROW][COL];
         for (int i = 0; i < ROW; i++)
             for (int j = 0; j < COL; j++)
