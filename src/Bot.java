@@ -1,6 +1,7 @@
 import javafx.scene.control.Button;
 public abstract class Bot {
-    public abstract int[] move(Button[][] tiles, int roundLeft);
+    public abstract int[] move(Button[][] tiles, int roundLeft, String player);
+    
     public Button[][] copyBoardGame(Button[][] board) {
         Button[][] tiles2 = new Button[8][8];
 
